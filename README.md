@@ -17,8 +17,7 @@ Open Chrome,Click 'View'->'Developer'->'Developer Tools'-> Click 'Console'
 In Mac<br/>
 Please close chrome before run<br/>
 a. Open 'Terminal' and run <b>'open /Applications/Google\ Chrome.app --args --allow-file-access-from-files'</b>
-<br/><br/>
-
+<br/>
 2. Error : Cannot load bower_component<br/>
 <b>Solution:</b><br/>
 a. Check the files exist<br/>
