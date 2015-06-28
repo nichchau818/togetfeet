@@ -20,4 +20,11 @@ a. Open 'Terminal' and run <b>'open /Applications/Google\ Chrome.app --args --al
 <br/>
 
 
+2. Error : Cannot load bower_component<br/>
+<b>Solution:</b><br/>
+a. Check the files exist<br/>
+b. if not exist,install packages with bower install. Bower installs packages to bower_components/<br/>
+<b>$ bower install <package></b>
+
+
 
