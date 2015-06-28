@@ -1,0 +1,32 @@
+<div class="scrollable" ng-controller="CreateEventController">
+    <div class="scrollable-content">
+	    <div class="list-group text-center">
+	      <div class="list-group-item list-group-item-home">					      
+			   <form class="form-signin">		
+				   <h2 class="form-signin-heading">Create a game</h2>			
+				<fieldset>  				  
+				<div class="form-group">				  
+				        	<input type="text" class="form-control" id="eventName" placeholder="Event name">&nbsp;<br/>   
+							<input type="text" class="form-control" id="startDate" placeholder="Start date">&nbsp;<br/>
+		   		   		    <input type="text" class="form-control" id="endDate" placeholder="End date">&nbsp;<br/>
+		   		   		    <input type="text" class="form-control" id="location" placeholder="Location" ng-model="chosenPlace" 							details="chosenPlaceDetails" googleplace>&nbsp;<br/>
+							<div id="map"></div>
+		 				  <br/>	
+		 				 <h4>Number of people:</h4>
+		 				 <rzslider rz-slider-floor="numOfMember.floor" rz-slider-ceil="numOfMember.ceil" 
+		 				 rz-slider-model="numOfMember.min" ></rzslider>
+ 		 				 <label for="numOfLevel" class="control-label col-lg-1">Level&nbsp;(From beginner to professional):</label>
+ 		 				 <rzslider rz-slider-floor="level.floor" rz-slider-ceil="level.ceil" 
+ 		 				 rz-slider-model="level.min" ></rzslider>	
+						 <span align="left">Beginner</span>	
+				      </div> 				 
+				  <br/>	
+				 <button type="submit" class="btn btn-lg btn-primary btn-block">Create event</button>
+				  </div>
+				  
+				</fieldset>				
+			  </form>	
+			  </div>
+		   </div>				
+      </div>
+</div>

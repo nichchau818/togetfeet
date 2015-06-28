@@ -1,0 +1,12 @@
+<div ng-controller="EventController">
+	<div class="scrollable">
+		<div class="scrollable-content section overthrow">
+	 	 <!-- <ui-gmap-google-map center="center" zoom="zoom" control="control"></ui-gmap-google-map>-->
+		  <div id="map"></div>
+		      <div id="repeat" ng-repeat="marker in markers | orderBy : 'title'">
+		           <a id="country_container" href="#" ng-click="openInfoWindow($event, marker)">
+		           <label id="names">{{marker.title}}</label></a>
+		      </div>
+		  </div>
+   </div>
+</div>
