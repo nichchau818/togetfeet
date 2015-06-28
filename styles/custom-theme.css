@@ -1,0 +1,68 @@
+.angular-google-map-container {
+    padding-bottom: 500px;
+}
+#map{
+    height:500px; 
+    width:500px; 
+    box-shadow: 3px 3px 10px gray;
+    }
+#repeat{ 
+     display: inline;
+     }
+#country_container { 
+     width: 1000px; 
+     margin: 13px 3px 3px 0px; 
+     text-align: center; 
+     width: 85px; 
+     padding: 4px; 
+     display: inline-table;  
+     color: white; 
+     background-color: black; 
+     font-size: 12px; 
+     cursor: pointer;
+     border: 1px solid black; 
+     border-radius:13px; 
+     }
+#country_container:hover { 
+     box-shadow: 0px 0px 10px black;
+     background-color: gray; 
+     border: 1px solid gray; 
+     cursor: pointer; 
+     }
+#names { 
+     cursor: pointer; 
+       }
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
