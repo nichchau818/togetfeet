@@ -1,4 +1,5 @@
-//
+
+'use strict';//
 // For this trivial demo we have just a unique MainController 
 // for everything
 //
@@ -39,6 +40,8 @@ app.controller('MainController', function($rootScope, $scope,$route,$location,$r
 	ceil: 4,
 	floor: 1
   };
+  
+ 
   // Fake text i used here and there.
   $scope.lorem = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel explicabo, aliquid eaque soluta nihil eligendi adipisci error, illum corrupti nam fuga omnis quod quaerat mollitia expedita impedit dolores ipsam. Obcaecati.';
 
@@ -116,7 +119,6 @@ app.controller('MainController', function($rootScope, $scope,$route,$location,$r
   };
 });
 
-
 app.controller('CreateEventController', function($scope,uiGmapGoogleMapApi){
 
 	console.log("Loading createEventController");
@@ -168,3 +170,28 @@ app.controller('CreateEventController', function($scope,uiGmapGoogleMapApi){
 	console.log('autocomplete'+$scope.gPlace);
 });
 
+
+app.controller('LoginController', ['$scope','$firebaseSimpleLogin',function($scope,$firebaseSimpleLogin){
+  var firebaseObj = new Firebase("https://intense-heat-1597.firebaseIO.com");
+  var loginObj = $firebaseSimpleLogin(firebaseObj);
+  
+  // Log a user in using email/password authentication
+  $scope.user = {};
+  $scope.SignIn = function(e){ 
+     e.preventDefault();
+     var username = $scope.user.email;
+     var password = $scope.user.password;
+	
+     loginObj.$login('password', {
+                email: username,
+		        password: password
+            })
+            .then(function(user) {
+                //Success callback
+                console.log('Authentication successful');
+            }, function(error) {
+                //Failure callback
+                console.log('Authentication failure');
+            });
+  }
+}]);

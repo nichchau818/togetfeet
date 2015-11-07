@@ -1,9 +1,11 @@
+'use strict';
 // 
 // Here is how to define your module 
 // has dependent on mobile-angular-ui
 // 
 var app = angular.module('MobileAngularUiExamples', [
   'ngRoute',
+  //'MobileAngularUiExamples.login',
   'mobile-angular-ui',
   'rzModule',
   'uiGmapgoogle-maps',
@@ -13,7 +15,8 @@ var app = angular.module('MobileAngularUiExamples', [
   // easy to use alternative to other 3rd party libs like hammer.js, with the
   // final pourpose to integrate gestures into default ui interactions like 
   // opening sidebars, turning switches on/off ..
-  'mobile-angular-ui.gestures'
+  'mobile-angular-ui.gestures',
+  'firebase'
 ]);
 
 app.run(function($transform) {
@@ -27,6 +30,7 @@ app.run(function($transform) {
 // 
 app.config(function($routeProvider) {
   $routeProvider.when('/',              {templateUrl: 'home.html', reloadOnSearch: false});
+  $routeProvider.when('/home',          {templateUrl: 'home.html', reloadOnSearch: false});  
   $routeProvider.when('/register',      {templateUrl: 'register.html', reloadOnSearch: false}); 
   $routeProvider.when('/eventMap',      {templateUrl: 'eventMap.html', reloadOnSearch: false}); 
   $routeProvider.when('/createEvent',   {templateUrl: 'createEvent.html', reloadOnSearch: false}); 
@@ -41,6 +45,7 @@ app.config(function($routeProvider) {
   $routeProvider.when('/drag',          {templateUrl: 'drag.html', reloadOnSearch: false});
   $routeProvider.when('/drag2',         {templateUrl: 'drag2.html', reloadOnSearch: false});
   $routeProvider.when('/carousel',      {templateUrl: 'carousel.html', reloadOnSearch: false});
+  $routeProvider.otherwise({redirectTo: '/home'});
 });
 
 // 
