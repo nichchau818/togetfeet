@@ -1,33 +1,35 @@
+<div ng-controller="CreateUserController　as registration" class="scrollable">
 <div class="scrollable">  
   <div class="scrollable-content">
     <div class="list-group text-center">
       <div class="list-group-item list-group-item-home">
 			<h2>Sign Up</h2>
-
-			 <form class="form-signin">				
-				<fieldset>  				  
-					<div class="form-group">				  
-						<input type="text" ng-model="user.first" class="form-control" id="inputFirstName" placeholder="First name">&nbsp;<br/>   
-						<input type="text" ng-model="user.last" class="form-control" id="inputLastName" placeholder="Last name">&nbsp;<br/>
-						<input type="text" ng-model="user.userId" class="form-control" id="inputEmailOrMobile1" placeholder="Email">&nbsp;<br/>
-						<!-- <input type="text" class="form-control" id="inputEmailOrMobile2" placeholder="Re-enter email">&nbsp;<br/> -->
-						<input type="text" ng-model="user.password" class="form-control" id="newPassword" placeholder="New password">&nbsp;<br/>
-						<div class="radio">
-							<label>
-								<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
-								Female 					                          
-							</label>
-							<label>
-								<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-								Male
-							</label> 		                     
-						</div>
-						<button type="submit" ng-click="register()" class="btn btn-lg btn-primary btn-block">{{regmsg}}</button>	
-					</div> 				 
-					<br/>	
-				</fieldset>				
-			</form>					
+		    <form name="registrationForm" novalidate 
+		             ng-submit="registration.submit(registrationForm.$valid)">
+		          <div class="form-group">
+		               <label>User Name</label>
+		               <input type="email" name="email" id="email" class="form-control" ng-model="registration.user.email" required validate-email="registration.user.email" />
+		               <div ng-messages="registrationForm.email.$error"> <div ng-messages-include="messages.html"></div>
+		           </div>
+		           <div class="form-group">
+		               <label>Password</label>
+		               <input type="password" name="password" class="form-control" ng-model="registration.user.password" required />
+		               <div ng-messages="registrationForm.password.$error"> <div ng-messages-include="messages.html"></div>
+		           </div>
+		           <div class="form-group">
+		               <label>Confirm Password</label>
+		               <input type="password" name="confirmPassword" class="form-control" 
+		                      ng-model="registration.user.confirmPassword" 
+		                      required compare-to="registration.user.password" />
+		               <div ng-messages="registrationForm.confirmPassword.$error"> <div ng-messages-include="messages.html"></div>
+		           </div>
+		           <div class="form-group">
+		               <button type="submit" class="btn btn-primary" ng-disabled="registrationForm.$invalid">Register</button><br/>
+	               </div>
+				    <p style="color:red;" ng-show="createAccountError">{{createAccountMessage}}</span>	
+		       </form>				
 		</div>
 	</div>
 	</div>
+</div>
 </div>

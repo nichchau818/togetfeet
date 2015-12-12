@@ -5,6 +5,7 @@
 // 
 var app = angular.module('MobileAngularUiExamples', [
   'ngRoute',
+  'ngMessages',
   //'MobileAngularUiExamples.login',
   'mobile-angular-ui',
   'rzModule',
@@ -16,7 +17,14 @@ var app = angular.module('MobileAngularUiExamples', [
   // final pourpose to integrate gestures into default ui interactions like 
   // opening sidebars, turning switches on/off ..
   'mobile-angular-ui.gestures',
-  'firebase'
+  'firebase',
+]);
+
+// let's create a re-usable factory that generates the $firebaseAuth instance
+app.factory('Auth', ['$firebaseAuth',function($firebaseAuth) {
+    var ref = new Firebase("https://intense-heat-1597.firebaseIO.com");
+    return $firebaseAuth(ref);
+  }
 ]);
 
 app.run(function($transform) {
@@ -34,6 +42,7 @@ app.config(function($routeProvider) {
   $routeProvider.when('/register',      {templateUrl: 'register.html', reloadOnSearch: false}); 
   $routeProvider.when('/eventMap',      {templateUrl: 'eventMap.html', reloadOnSearch: false}); 
   $routeProvider.when('/createEvent',   {templateUrl: 'createEvent.html', reloadOnSearch: false}); 
+  $routeProvider.when('/sportNews',     {templateUrl: 'sportNews.html', reloadOnSearch: false}); 
   $routeProvider.when('/toggle',        {templateUrl: 'toggle.html', reloadOnSearch: false}); 
   $routeProvider.when('/tabs',          {templateUrl: 'tabs.html', reloadOnSearch: false}); 
   $routeProvider.when('/accordion',     {templateUrl: 'accordion.html', reloadOnSearch: false}); 
@@ -279,3 +288,35 @@ app.directive('googleplace', function() {
     };
 });
 
+app.directive("compareTo", function(){
+   return {
+     require: "ngModel",
+     scope: {
+       otherModelValue: "=compareTo"
+     },
+     link: function(scope, element, attributes, ngModel) {
+
+       ngModel.$validators.compareTo = function(modelValue) {
+         return modelValue == scope.otherModelValue;
+       };
+       scope.$watch("otherModelValue", function() {
+         ngModel.$validate();
+       });
+     }
+   };
+});
+
+app.directive('validateEmail', function() {
+  var EMAIL_REGEXP = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,5})$/;
+
+  return {
+    require: 'ngModel',
+    restrict: '',
+    link: function(scope, elmment, attributes, ngModel) {
+        // this will overwrite the default Angular email validator
+        ngModel.$validators.validateEmail = function(modelValue) {
+          return ngModel.$isEmpty(modelValue) || EMAIL_REGEXP.test(modelValue);
+        };
+    }
+  };
+});

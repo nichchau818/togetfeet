@@ -171,9 +171,8 @@ app.controller('CreateEventController', function($scope,uiGmapGoogleMapApi){
 });
 
 
-app.controller('LoginController', ['$scope','$firebaseSimpleLogin',function($scope,$firebaseSimpleLogin){
+app.controller('LoginController', ['$scope',function($scope,$firebaseAuth){
   var firebaseObj = new Firebase("https://intense-heat-1597.firebaseIO.com");
-  var loginObj = $firebaseSimpleLogin(firebaseObj);
   
   // Log a user in using email/password authentication
   $scope.user = {};
@@ -181,17 +180,47 @@ app.controller('LoginController', ['$scope','$firebaseSimpleLogin',function($sco
      e.preventDefault();
      var username = $scope.user.email;
      var password = $scope.user.password;
-	
-     loginObj.$login('password', {
+	 
+	 firebaseObj.authWithPassword({
                 email: username,
-		        password: password
-            })
-            .then(function(user) {
-                //Success callback
-                console.log('Authentication successful');
-            }, function(error) {
-                //Failure callback
-                console.log('Authentication failure');
-            });
+		        password: password		
+	 }, function(error, authData) {
+    if (error) {
+      console.log("Login Failed!", error);
+    } else {
+      console.log("Authenticated successfully with payload:", authData);
+    }
+   });
   }
+}]);
+
+app.controller('CreateUserController', ['$scope','Auth','$location',function($scope, Auth,$location) {
+	var model = this;
+    model.message = "";
+    model.user = {
+      username: "",
+      password: "",
+      confirmPassword: ""
+    };
+       model.submit = function(isValid) {
+		  
+       if (isValid) {
+	   console.log("Create User Account");
+         $scope.message = null;
+         $scope.error = null;
+	   var username = $scope.registration.user.email;
+       var password = $scope.registration.user.password;
+         Auth.$createUser({
+           email: username,
+           password: password
+         }).then(function(userData) {
+		   $location.path('/sportNews');
+		   console.log("User created with uid: " + userData.uid);
+         }).catch(function(error) {
+		   $scope.createAccountError = true;
+		   $scope.createAccountMessage = error.message;
+		   console.log("Error creating user:", error.message);
+         });
+       };
+    };
 }]);
