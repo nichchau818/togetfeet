@@ -1,9 +1,12 @@
 # togetfeet
-version4
+version5
+Merge UI interface : Login and Create Account using TAB<br/>
+Add error msg in Login page<br/>
+Add insert, update and delete in create event page<br/>
+version4<br/>
 Add Create User Account features and form validation using Firebase<br/>
-version3
-Add email/password authentication using Firebase
-
+version3<br/>
+Add email/password authentication using Firebase<br/>
 
 
 <b>Installation</b><br/>
