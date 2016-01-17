@@ -1,5 +1,69 @@
 <div ng-controller="LoginController" class="scrollable">  
-  <div class="scrollable-content">
+	  <form name="outerForm" class="tab-form-demo">
+	    <uib-tabset>
+	      <uib-tab heading="Login">
+	        <ng-form name="nestedForm">	         
+			      <div class="list-group text-center">
+			        <div class="list-group-item list-group-item-home">
+				    <br/><br/>
+   	         <form class="form-signin">
+  	           <h2 class="form-signin-heading">Please sign in</h2>
+   	           <label for="inputEmail" class="sr-only">Email address</label>
+   	           <input ng-model="user.email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+   	           <label for="inputPassword" class="sr-only">Password</label>
+   	           <input ng-model="user.password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+   	           <div class="checkbox">
+   	             <label>
+   	               <input type="checkbox" value="remember-me"> Remember me
+   	             </label>
+   	           </div>
+		       <p style="color:red;" ng-show="signInError">{{signInMessage}}</p>				    
+   	           <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="SignIn($event)">Login</button>
+   	           <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="FacebookSignIn()">Facebook login</button>
+			   
+   	         </form>
+	          
+		    </div>
+		   </div>  
+	        </ng-form>
+	      </uib-tab>
+	      <uib-tab heading="Create Account">
+			<div ng-controller="CreateUserController　as registration">		
+		      <div class="list-group text-center">
+		        <div class="list-group-item list-group-item-home">
+			    <br/><br/>
+					    <form name="registrationForm" novalidate 
+					             ng-submit="registration.submit(registrationForm.$valid)">
+					          <div class="form-group">
+					               <label>User Name</label>
+					               <input type="email" name="email" id="email" class="form-control" ng-model="registration.user.email" required validate-email="registration.user.email" />
+					               <div ng-messages="registrationForm.email.$error"> <div ng-messages-include="messages.html"></div>
+					           </div>
+					           <div class="form-group">
+					               <label>Password</label>
+					               <input type="password" name="password" class="form-control" ng-model="registration.user.password" required />
+					               <div ng-messages="registrationForm.password.$error"> <div ng-messages-include="messages.html"></div>
+					           </div>
+					           <div class="form-group">
+					               <label>Confirm Password</label>
+					               <input type="password" name="confirmPassword" class="form-control" 
+					                      ng-model="registration.user.confirmPassword" 
+					                      required compare-to="registration.user.password" />
+					               <div ng-messages="registrationForm.confirmPassword.$error"> <div ng-messages-include="messages.html"></div>
+					           </div>
+					           <div class="form-group">
+					               <button type="submit" class="btn btn-primary" ng-disabled="registrationForm.$invalid">Register</button><br/>
+				               </div>
+							    <p style="color:red;" ng-show="createAccountError">{{createAccountMessage}}</span>	
+					       </form>
+					   </div>
+				   </div>				
+			</div>
+	      </uib-tab>
+	    </uib-tabset>
+	  </form>
+	
+  <!--<div class="scrollable-content">
     <div class="list-group text-center">
       <div class="list-group-item list-group-item-home">
 	         <form class="form-signin">
@@ -14,13 +78,15 @@
 	             </label>
 	           </div>
 	           <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="SignIn($event)">Login</button>
+	           <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="FacebookSignIn()">Facebook login</button>
+			   
 	         </form>
 			 <form class="form-signin">
 			 <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="go('register')">Sign Up Now</button>
 			 </form>
 	       <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	     <!--  <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
-      </div>
+    <!--  </div>
     </div>
-  </div>
+  </div>-->
 </div>

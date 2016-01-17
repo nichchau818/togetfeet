@@ -119,7 +119,7 @@ app.controller('MainController', function($rootScope, $scope,$route,$location,$r
   };
 });
 
-app.controller('CreateEventController', function($scope,uiGmapGoogleMapApi){
+/*app.controller('CreateEventController', function($scope,uiGmapGoogleMapApi){
 
 	console.log("Loading createEventController");
 	// Do stuff with your $scope.
@@ -168,29 +168,44 @@ app.controller('CreateEventController', function($scope,uiGmapGoogleMapApi){
 	$scope.gPlace;// call google map autocomplete
 	
 	console.log('autocomplete'+$scope.gPlace);
-});
+});*/
 
 
-app.controller('LoginController', ['$scope',function($scope,$firebaseAuth){
-  var firebaseObj = new Firebase("https://intense-heat-1597.firebaseIO.com");
+app.controller('LoginController', ['$scope','Auth','$location',function($scope,Auth,$location){
+ // var firebaseObj = new Firebase("https://intense-heat-1597.firebaseIO.com");
+  
+  $scope.user = {};
+  $scope.FacebookSignIn=function(e){
+	  console.log("Facebook Login");
+	  Auth.$authWithOAuthPopup("facebook", function(error, authData) {
+	    if (error) {
+			console.log("Login Failed!", error);
+	    } else {
+	        console.log("Authenticated successfully with payload:", authData);
+	    }
+	  },{
+		  remember:"sessionOnly",
+		  scope:"email,user_likes"		
+	  });
+  }
   
   // Log a user in using email/password authentication
-  $scope.user = {};
   $scope.SignIn = function(e){ 
      e.preventDefault();
      var username = $scope.user.email;
      var password = $scope.user.password;
 	 
-	 firebaseObj.authWithPassword({
-                email: username,
-		        password: password		
-	 }, function(error, authData) {
-    if (error) {
-      console.log("Login Failed!", error);
-    } else {
-      console.log("Authenticated successfully with payload:", authData);
-    }
-   });
+	 Auth.$authWithPassword({
+	                 email: username,
+	 		        password: password		
+	 }).then(function(authData) {
+		   $scope.signInError = false;
+           console.log("Logged in as:", authData.uid);
+       }).catch(function(error) {
+		   $scope.signInError = true;
+		   $scope.signInMessage = 'Login Failed. Please check your login or password';
+           console.error("Authentication failed:", error);
+       });
   }
 }]);
 
@@ -223,4 +238,119 @@ app.controller('CreateUserController', ['$scope','Auth','$location',function($sc
          });
        };
     };
+}]);
+
+app.controller('CreateEventController', ['$scope','$location', 'ItemsService', function ($scope,$location, ItemsService) {
+    
+	$scope.newItem = { eventName: '', description: '',startDate:'',endDate:'', noOfPpl: '' };
+    $scope.currentItem = null;
+    $scope.items = ItemsService.getItems();
+	
+    $scope.addItem = function () {
+		var startDate  = $scope.newItem.startDate;
+		var endDate = $scope.newItem.endDate;
+		var convStartDateToJSON = startDate.toJSON();
+		var convEndDateToJSON = endDate.toJSON();
+		var obj= { eventName: $scope.newItem.eventName, 
+			       description:$scope.newItem.description,
+			       startDate:convStartDateToJSON,
+			       endDate:convEndDateToJSON, 
+			       noOfPpl:$scope.newItem.noOfPpl
+		         };
+   
+        ItemsService.addItem(angular.copy(obj));
+        $scope.newItem = { eventName: '', description: '',startDate:'',endDate:'', noOfPpl: '' };
+    };
+
+    $scope.updateItem = function (id) {
+        ItemsService.updateItem(id);
+    };
+
+    $scope.removeItem = function (id) {
+		ItemsService.removeItem(id);
+    };
+    
+    $scope.today = function() {
+       $scope.newItem.startDate = new Date();
+	   $scope.newItem.endDate = new Date();
+     };
+     $scope.today();
+
+     $scope.clear = function() {
+       $scope.newItem.startDate = null;
+	   $scope.newItem.endDate = null;
+     };
+     // Disable weekend selection
+     $scope.disabled = function(date, mode) {
+       return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+     };
+
+     $scope.toggleMin = function() {
+       $scope.minDate = $scope.minDate ? null : new Date();
+     };
+
+     $scope.toggleMin();
+     $scope.maxDate = new Date(2020, 5, 22);
+
+     $scope.open1 = function() {
+       $scope.popup1.opened = true;
+     };
+
+     $scope.open2 = function() {
+       $scope.popup2.opened = true;
+     };
+
+     $scope.setDate = function(year, month, day) {
+       $scope.dt = new Date(year, month, day);
+     };
+
+     $scope.dateOptions = {
+       formatYear: 'yy',
+       startingDay: 1
+     };
+
+     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+     $scope.format = $scope.formats[0];
+     $scope.altInputFormats = ['M!/d!/yyyy'];
+
+     $scope.popup1 = {
+       opened: false
+     };
+
+     $scope.popup2 = {
+       opened: false
+     };
+
+     var tomorrow = new Date();
+     tomorrow.setDate(tomorrow.getDate() + 1);
+     var afterTomorrow = new Date();
+     afterTomorrow.setDate(tomorrow.getDate() + 1);
+     $scope.events =
+       [
+         {
+           date: tomorrow,
+           status: 'full'
+         },
+         {
+           date: afterTomorrow,
+           status: 'partially'
+         }
+       ];
+
+     $scope.getDayClass = function(date, mode) {
+       if (mode === 'day') {
+         var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+         for (var i = 0; i < $scope.events.length; i++) {
+           var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+           if (dayToCheck === currentDay) {
+             return $scope.events[i].status;
+           }
+         }
+       }
+
+       return '';
+     };
+	
 }]);

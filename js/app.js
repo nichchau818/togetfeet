@@ -17,15 +17,46 @@ var app = angular.module('MobileAngularUiExamples', [
   // final pourpose to integrate gestures into default ui interactions like 
   // opening sidebars, turning switches on/off ..
   'mobile-angular-ui.gestures',
+  'ngAnimate',
+  'ui.bootstrap',
   'firebase',
 ]);
+app.constant('FIREBASE_URI','https://intense-heat-1597.firebaseIO.com');
 
 // let's create a re-usable factory that generates the $firebaseAuth instance
-app.factory('Auth', ['$firebaseAuth',function($firebaseAuth) {
-    var ref = new Firebase("https://intense-heat-1597.firebaseIO.com");
+app.factory('Auth', ['$firebaseAuth','FIREBASE_URI',function($firebaseAuth,FIREBASE_URI) {
+    var ref = new Firebase(FIREBASE_URI);
     return $firebaseAuth(ref);
   }
 ]);
+
+app.factory('ItemsService', ['$firebaseArray', 'FIREBASE_URI', function ($firebaseArray, FIREBASE_URI) {
+    var ref = new Firebase(FIREBASE_URI);
+    var items = $firebaseArray(ref);
+
+    var getItems = function () {
+        return items;
+    };
+
+    var addItem = function (item) {
+        items.$add(item);
+    };
+
+    var updateItem = function (id) {
+        items.$save(id);
+    };
+
+    var removeItem = function (id) {
+        items.$remove(id);
+    };
+
+    return {
+        getItems: getItems,
+        addItem: addItem,
+        updateItem: updateItem,
+        removeItem: removeItem
+    }
+}]);
 
 app.run(function($transform) {
   window.$transform = $transform;
@@ -54,7 +85,7 @@ app.config(function($routeProvider) {
   $routeProvider.when('/drag',          {templateUrl: 'drag.html', reloadOnSearch: false});
   $routeProvider.when('/drag2',         {templateUrl: 'drag2.html', reloadOnSearch: false});
   $routeProvider.when('/carousel',      {templateUrl: 'carousel.html', reloadOnSearch: false});
-  $routeProvider.otherwise({redirectTo: '/home'});
+  $routeProvider.otherwise({redirectTo: '/createEvent'});
 });
 
 // 
@@ -320,3 +351,4 @@ app.directive('validateEmail', function() {
     }
   };
 });
+
